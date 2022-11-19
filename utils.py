@@ -20,7 +20,7 @@ def answers_distribution(answers_list: list) -> str:
 
     for number, answer in enumerate(answers_list, start=1):
         string = f"{number}). {answer.text}"
-        strings.append(string)
+        strings.append(string.rstrip())
         if answer.is_correct():
             corrects.append(number)
 

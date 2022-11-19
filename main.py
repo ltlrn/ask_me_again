@@ -34,6 +34,7 @@ class Game:
 
     def __init__(self):
         self.WAITS: bool = True
+        self.RANDOM: bool = True
         self.STAGE: str = "CHOOSE"
 
         self.quiz_list: list = []
@@ -44,9 +45,9 @@ class Game:
         """Пререзагружает игру, может менять последовательность
         вывода вопросов.
         """
-        if order == "random":
+        if self.RANDOM:
             self.generator = (question for question in randomize(self.quiz_list))
-        elif order == "straight":
+        else:
             self.generator = (question for question in self.quiz_list)
 
     def change_variant(self) -> None:

@@ -12,69 +12,103 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.question_field = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.question_field.setGeometry(QtCore.QRect(40, 50, 731, 201))
+        self.question_field.setGeometry(QtCore.QRect(170, 29, 611, 141))
         self.question_field.setObjectName("question_field")
         self.answer_field = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.answer_field.setGeometry(QtCore.QRect(300, 280, 471, 261))
+        self.answer_field.setGeometry(QtCore.QRect(250, 220, 531, 321))
         self.answer_field.setObjectName("answer_field")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(50, 21, 61, 20))
+        self.label.setGeometry(QtCore.QRect(180, 6, 71, 20))
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(310, 260, 121, 16))
+        self.label_2.setGeometry(QtCore.QRect(260, 195, 151, 21))
         self.label_2.setObjectName("label_2")
         self.radioButton_1 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_1.setGeometry(QtCore.QRect(230, 290, 41, 20))
+        self.radioButton_1.setGeometry(QtCore.QRect(170, 210, 41, 31))
+        self.radioButton_1.setMaximumSize(QtCore.QSize(61, 31))
+        self.radioButton_1.setChecked(True)
         self.radioButton_1.setObjectName("radioButton_1")
         self.radioButton_2 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_2.setGeometry(QtCore.QRect(230, 330, 41, 21))
+        self.radioButton_2.setGeometry(QtCore.QRect(170, 260, 41, 21))
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_3 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_3.setGeometry(QtCore.QRect(230, 370, 41, 20))
+        self.radioButton_3.setGeometry(QtCore.QRect(170, 310, 41, 20))
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_4.setGeometry(QtCore.QRect(230, 410, 41, 20))
+        self.radioButton_4.setGeometry(QtCore.QRect(170, 360, 41, 20))
         self.radioButton_4.setObjectName("radioButton_4")
         self.radioButton_5 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_5.setGeometry(QtCore.QRect(230, 450, 41, 20))
+        self.radioButton_5.setGeometry(QtCore.QRect(170, 410, 41, 20))
         self.radioButton_5.setObjectName("radioButton_5")
         self.main_button = QtWidgets.QPushButton(self.centralwidget)
-        self.main_button.setGeometry(QtCore.QRect(40, 490, 221, 51))
+        self.main_button.setGeometry(QtCore.QRect(20, 490, 211, 51))
         self.main_button.setObjectName("main_button")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(50, 470, 151, 16))
+        self.label_3.setGeometry(QtCore.QRect(20, 460, 151, 16))
         self.label_3.setObjectName("label_3")
         self.total = QtWidgets.QLineEdit(self.centralwidget)
-        self.total.setGeometry(QtCore.QRect(40, 300, 51, 22))
+        self.total.setGeometry(QtCore.QRect(40, 30, 81, 22))
         self.total.setObjectName("total")
         self.correct = QtWidgets.QLineEdit(self.centralwidget)
-        self.correct.setGeometry(QtCore.QRect(40, 360, 31, 22))
+        self.correct.setGeometry(QtCore.QRect(40, 90, 51, 22))
         self.correct.setObjectName("correct")
         self.errors = QtWidgets.QLineEdit(self.centralwidget)
-        self.errors.setGeometry(QtCore.QRect(40, 420, 31, 22))
+        self.errors.setGeometry(QtCore.QRect(40, 150, 51, 22))
         self.errors.setObjectName("errors")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(40, 280, 91, 16))
+        self.label_4.setGeometry(QtCore.QRect(40, 5, 111, 21))
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(40, 340, 57, 14))
+        self.label_5.setGeometry(QtCore.QRect(40, 70, 61, 16))
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(40, 400, 57, 14))
+        self.label_6.setGeometry(QtCore.QRect(40, 130, 61, 16))
         self.label_6.setObjectName("label_6")
+        self.indicator_1 = QtWidgets.QLabel(self.centralwidget)
+        self.indicator_1.setGeometry(QtCore.QRect(60, 215, 101, 21))
+        self.indicator_1.setStyleSheet("background-color: rgb(202, 175, 255);")
+        self.indicator_1.setText("")
+        self.indicator_1.setObjectName("indicator_1")
+        self.indicator_2 = QtWidgets.QLabel(self.centralwidget)
+        self.indicator_2.setGeometry(QtCore.QRect(60, 260, 101, 21))
+        self.indicator_2.setStyleSheet("background-color: rgb(202, 175, 255);")
+        self.indicator_2.setText("")
+        self.indicator_2.setObjectName("indicator_2")
+        self.indicator_3 = QtWidgets.QLabel(self.centralwidget)
+        self.indicator_3.setGeometry(QtCore.QRect(60, 310, 101, 21))
+        self.indicator_3.setStyleSheet("background-color: rgb(202, 175, 255);")
+        self.indicator_3.setText("")
+        self.indicator_3.setObjectName("indicator_3")
+        self.indicator_5 = QtWidgets.QLabel(self.centralwidget)
+        self.indicator_5.setGeometry(QtCore.QRect(60, 410, 101, 21))
+        self.indicator_5.setStyleSheet("background-color: rgb(202, 175, 255);")
+        self.indicator_5.setText("")
+        self.indicator_5.setObjectName("indicator_5")
+        self.indicator_4 = QtWidgets.QLabel(self.centralwidget)
+        self.indicator_4.setGeometry(QtCore.QRect(60, 360, 101, 21))
+        self.indicator_4.setStyleSheet("background-color: rgb(202, 175, 255);")
+        self.indicator_4.setText("")
+        self.indicator_4.setObjectName("indicator_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setEnabled(True)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 19))
         self.menubar.setDefaultUp(False)
         self.menubar.setObjectName("menubar")
+        self.menu = QtWidgets.QMenu(self.menubar)
+        self.menu.setObjectName("menu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.action = QtGui.QAction(MainWindow)
+        self.action.setObjectName("action")
+        self.menu.addAction(self.action)
+        self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -88,6 +122,14 @@ class Ui_MainWindow(object):
             self.radioButton_3,
             self.radioButton_4,
             self.radioButton_5,
+        ]
+
+        self.indicators_box = [
+            self.indicator_1,
+            self.indicator_2,
+            self.indicator_3,
+            self.indicator_4,
+            self.indicator_5,
         ]
 
         self.radio_box[0].setChecked(True)
@@ -140,6 +182,8 @@ class Ui_MainWindow(object):
             self.game.WAITS = False
 
             clear_fields(self.answer_field, self.question_field)
+            for indicator in self.indicators_box:
+                indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
             self.game.restart()
             self.game.next_question()
@@ -147,12 +191,14 @@ class Ui_MainWindow(object):
             # may be reimplement it like Game class method...
             answers, corrects = answers_distribution(self.game.current_question.answers)
             self.game.current_question.corrects = corrects
+            number = f'{self.game.current_question.number}).'
+            question = self.game.current_question.text
 
-            self.question_field.setPlainText(self.game.current_question.text)
+            self.question_field.setPlainText(f'{number} {question}')
             self.answer_field.setPlainText(answers)
 
             self.main_button.setText("Проверить...")  # may be func...
-            self.game.STAGE = "CHECK"  #
+            self.game.STAGE = "CHECK"  
 
         elif self.game.STAGE == "CHECK":
 
@@ -160,29 +206,37 @@ class Ui_MainWindow(object):
                 self.radio_box
             )  # switch на количество правильных ответов
 
-            print("choices:", choices)
-            print("corrects:", self.game.current_question.corrects)
-
-            # if corrects is [] - index error!
-
             if choices == self.game.current_question.corrects:
                 print("CORRECT")
+                for choice in choices:
+                    indicator = self.indicators_box[choice-1]
+                    indicator.setStyleSheet("background-color: green;")
             else:
                 print(f"Errror!, correct is {self.game.current_question.corrects[0]}")
+                for correct in self.game.current_question.corrects:
+                    indicator = self.indicators_box[correct-1]
+                    indicator.setStyleSheet("background-color: green;")
+                for choice in choices:
+                    indicator = self.indicators_box[choice-1]
+                    indicator.setStyleSheet("background-color: red;")
 
             self.main_button.setText("...вперде!")
             self.game.STAGE = "CHOOSE"
 
         elif (not self.game.WAITS) and self.game.STAGE == "CHOOSE":
             clear_fields(self.answer_field, self.question_field)
+            for indicator in self.indicators_box:
+                indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
             self.game.next_question()
-
-            answers, corrects = answers_distribution(self.game.current_question.answers)
-            self.game.current_question.corrects = corrects
-
+            
             if self.game.current_question:
-                self.question_field.setPlainText(self.game.current_question.text)
+                answers, corrects = answers_distribution(self.game.current_question.answers)
+                self.game.current_question.corrects = corrects
+                number = f'{self.game.current_question.number}).'
+                question = self.game.current_question.text
+
+                self.question_field.setPlainText(f'{number} {question}')
                 self.answer_field.setPlainText(answers)
 
                 self.main_button.setText("Проверить...")
@@ -192,19 +246,10 @@ class Ui_MainWindow(object):
                 self.main_button.setText("СНОВА!")
                 self.game.STAGE = "CHOOSE"
 
-    # def quiz_mapping(self, quiz_list: list, order: str = "random"):
-    #     if order == "random":
-    #         pass
-
     def test_read(self):
         for q in self.quiz_list:
             print(q.text, q.answers[0].text)
 
-        # q, a = db_read()
-
-        # print(q)
-        # print('+'* 50)
-        # print(a)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -224,7 +269,8 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "всего вопросов"))
         self.label_5.setText(_translate("MainWindow", "верно"))
         self.label_6.setText(_translate("MainWindow", "неверно"))
-
+        self.menu.setTitle(_translate("MainWindow", "опции"))
+        self.action.setText(_translate("MainWindow", "порядок"))
 
 if __name__ == "__main__":
     import sys
