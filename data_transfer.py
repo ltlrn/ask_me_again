@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def db_create():
     """Create simple db of two related tables,
     if it not already exists in current directory.
@@ -59,7 +60,6 @@ def db_read():
     for element in cursor:
         questions.append(element)
 
-    
     cursor.execute(
         """
         SELECT *
@@ -68,8 +68,7 @@ def db_read():
     )
 
     for element in cursor:
-        answers.append(element) 
-
+        answers.append(element)
 
     connect.close()
 

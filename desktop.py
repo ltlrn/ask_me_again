@@ -2,9 +2,13 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data_transfer import db_read
 from main import Question, Answer, Game
-from utils import clear_fields, answers_destribution
+from utils import clear_fields, answers_distribution, get_choices
+
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        super().__init__()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -74,23 +78,37 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
+
         self.quiz_list = []
-        self.game = Game() # экземпляр сеанса игры
+        self.game = Game()  # экземпляр сеанса игры
+
+        self.radio_box = [
+            self.radioButton_1,
+            self.radioButton_2,
+            self.radioButton_3,
+            self.radioButton_4,
+            self.radioButton_5,
+        ]
+
+        self.radio_box[0].setChecked(True)
 
         self.add_functions()
 
     def add_functions(self) -> None:
         self.main_button.clicked.connect(lambda: self.main_button_mechanism())
-        # self.main_button.clicked.connect(lambda: self.test_read())
+
+    def check_answer(self):
+        rb = self.sender()
+        if rb.isChecked():
+            print(rb.text())
 
     def forming_questions(self) -> None:
         """Adds to self.quiz_list Question and Answer class
         instances with data returned by db_read function.
         """
-        
+
         question_sets, answer_sets = db_read()
-            
+
         # answers may be sorted by question_id
 
         answers_list = []
@@ -106,18 +124,19 @@ class Ui_MainWindow(object):
                 if question.number == answer.question_id:
                     question.answers.append(answer)
 
-        self.game.quiz_list = self.quiz_list # may be some sort of deep copy would match better
-    
-
-
+        self.game.quiz_list = (
+            self.quiz_list
+        )  # may be some sort of deep copy would match better
 
     def main_button_mechanism(self) -> None:
-        """Механизм главной кнопки, собссно. Срабатывает при нажатии, часто по-разному, 
+        """Механизм главной кнопки, собссно. Срабатывает при нажатии, часто по-разному,
         интуитивно понятен.
         """
 
-        if self.game.WAITS:
-            self.forming_questions()
+        if self.game.WAITS and self.game.STAGE == "CHOOSE":
+            if not self.quiz_list:
+                self.forming_questions()
+
             self.game.WAITS = False
 
             clear_fields(self.answer_field, self.question_field)
@@ -125,28 +144,57 @@ class Ui_MainWindow(object):
             self.game.restart()
             self.game.next_question()
 
-            self.question_field.setPlainText(self.game.current_question.text)
-            self.answer_field.setPlainText(
-                answers_destribution(self.game.current_question.answers)
-                )
+            # may be reimplement it like Game class method...
+            answers, corrects = answers_distribution(self.game.current_question.answers)
+            self.game.current_question.corrects = corrects
 
-        elif not self.game.WAITS:
+            self.question_field.setPlainText(self.game.current_question.text)
+            self.answer_field.setPlainText(answers)
+
+            self.main_button.setText("Проверить...")  # may be func...
+            self.game.STAGE = "CHECK"  #
+
+        elif self.game.STAGE == "CHECK":
+
+            choices = get_choices(
+                self.radio_box
+            )  # switch на количество правильных ответов
+
+            print("choices:", choices)
+            print("corrects:", self.game.current_question.corrects)
+
+            # if corrects is [] - index error!
+
+            if choices == self.game.current_question.corrects:
+                print("CORRECT")
+            else:
+                print(f"Errror!, correct is {self.game.current_question.corrects[0]}")
+
+            self.main_button.setText("...вперде!")
+            self.game.STAGE = "CHOOSE"
+
+        elif (not self.game.WAITS) and self.game.STAGE == "CHOOSE":
             clear_fields(self.answer_field, self.question_field)
-            
+
             self.game.next_question()
 
-            self.question_field.setPlainText(self.game.current_question.text)
-            self.answer_field.setPlainText(
-                answers_destribution(self.game.current_question.answers)
-                )
-            
+            answers, corrects = answers_distribution(self.game.current_question.answers)
+            self.game.current_question.corrects = corrects
+
+            if self.game.current_question:
+                self.question_field.setPlainText(self.game.current_question.text)
+                self.answer_field.setPlainText(answers)
+
+                self.main_button.setText("Проверить...")
+                self.game.STAGE = "CHECK"
+
+            else:
+                self.main_button.setText("СНОВА!")
+                self.game.STAGE = "CHOOSE"
 
     # def quiz_mapping(self, quiz_list: list, order: str = "random"):
     #     if order == "random":
     #         pass
-
-
-    
 
     def test_read(self):
         for q in self.quiz_list:
@@ -180,6 +228,7 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

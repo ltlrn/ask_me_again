@@ -39,16 +39,16 @@ class Ui_MainWindow(object):
         self.save_button.clicked.connect(lambda: self.parser())
 
     def parser(self):
-        q_number = db_count()[0] + 1 # make it better!
+        q_number = db_count()[0] + 1  # make it better!
 
         questions_list = []
         questions_list.append(((self.question_field.toPlainText()).rstrip(),))
-        
+
         answers_list = []
         answers = self.answers_field.toPlainText()
-        
-        answers_list = answers.split('\n\n')
-        
+
+        answers_list = answers.split("\n\n")
+
         question_id = [q_number] * len(answers_list)
 
         corr_status = [0] * len(answers_list)
@@ -56,33 +56,36 @@ class Ui_MainWindow(object):
         for i in corrects(answers_list):
             corr_status[i] = 1
 
-        print('corrects: ', corr_status)
+        print("corrects: ", corr_status)
 
         answers_to_db = []
 
         for text, q_id, corr in zip(answers_list, question_id, corr_status):
             answers_to_db.append((text, q_id, corr))
 
-        print(f'{q_number} question created...')
-        
+        print(f"{q_number} question created...")
+
         db_insert(questions_list, answers_to_db)
         self.answers_field.clear()
         self.question_field.clear()
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Question Adder"))
-        self.question_field.setPlainText(_translate("MainWindow", "please, write your question here\n"
-""))
-        self.answers_field.setPlainText(_translate("MainWindow", "...and some answers - here"))
+        self.question_field.setPlainText(
+            _translate("MainWindow", "please, write your question here\n" "")
+        )
+        self.answers_field.setPlainText(
+            _translate("MainWindow", "...and some answers - here")
+        )
         self.label.setText(_translate("MainWindow", "answers"))
         self.label_2.setText(_translate("MainWindow", "question"))
         self.save_button.setText(_translate("MainWindow", "Save"))
-    
-    
+
+
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
