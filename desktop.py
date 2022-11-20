@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         self.main_button.setGeometry(QtCore.QRect(20, 490, 211, 51))
         self.main_button.setObjectName("main_button")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(20, 460, 151, 16))
+        self.label_3.setGeometry(QtCore.QRect(20, 460, 171, 16))
         self.label_3.setObjectName("label_3")
         self.total = QtWidgets.QLineEdit(self.centralwidget)
         self.total.setGeometry(QtCore.QRect(40, 30, 81, 22))
@@ -101,13 +101,20 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
+        self.menu_2 = QtWidgets.QMenu(self.menu)
+        self.menu_2.setObjectName("menu_2")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.action = QtGui.QAction(MainWindow)
-        self.action.setObjectName("action")
-        self.menu.addAction(self.action)
+        self.action_2 = QtGui.QAction(MainWindow)
+        self.action_2.setCheckable(True)
+        self.action_2.setChecked(True)
+        self.action_2.setObjectName("action_2")
+        self.action_3 = QtGui.QAction(MainWindow)
+        self.action_3.setObjectName("action_3")
+        self.menu_2.addAction(self.action_2)
+        self.menu.addAction(self.menu_2.menuAction())
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -181,6 +188,16 @@ class Ui_MainWindow(object):
 
             self.game.WAITS = False
 
+            if self.action_2.isChecked():
+                self.game.RANDOM = True
+            else:
+                self.game.RANDOM = False
+
+            self.game.counters_drop()
+
+            self.correct.setText("0")
+            self.errors.setText("0")
+
             clear_fields(self.answer_field, self.question_field)
             for indicator in self.indicators_box:
                 indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
@@ -188,17 +205,21 @@ class Ui_MainWindow(object):
             self.game.restart()
             self.game.next_question()
 
+            self.total.setText(
+                f"{self.game.counter_total} из {self.game.questions_count()}"
+            )
+
             # may be reimplement it like Game class method...
             answers, corrects = answers_distribution(self.game.current_question.answers)
             self.game.current_question.corrects = corrects
-            number = f'{self.game.current_question.number}).'
+            number = f"{self.game.current_question.number})."
             question = self.game.current_question.text
 
-            self.question_field.setPlainText(f'{number} {question}')
+            self.question_field.setPlainText(f"{number} {question}")
             self.answer_field.setPlainText(answers)
 
             self.main_button.setText("Проверить...")  # may be func...
-            self.game.STAGE = "CHECK"  
+            self.game.STAGE = "CHECK"
 
         elif self.game.STAGE == "CHECK":
 
@@ -207,18 +228,23 @@ class Ui_MainWindow(object):
             )  # switch на количество правильных ответов
 
             if choices == self.game.current_question.corrects:
-                print("CORRECT")
                 for choice in choices:
-                    indicator = self.indicators_box[choice-1]
+                    indicator = self.indicators_box[choice - 1]
                     indicator.setStyleSheet("background-color: green;")
+
+                    self.game.counter_corrects += 1
+                    self.correct.setText(str(self.game.counter_corrects))
+
             else:
-                print(f"Errror!, correct is {self.game.current_question.corrects[0]}")
                 for correct in self.game.current_question.corrects:
-                    indicator = self.indicators_box[correct-1]
+                    indicator = self.indicators_box[correct - 1]
                     indicator.setStyleSheet("background-color: green;")
                 for choice in choices:
-                    indicator = self.indicators_box[choice-1]
+                    indicator = self.indicators_box[choice - 1]
                     indicator.setStyleSheet("background-color: red;")
+
+                    self.game.counter_errors += 1
+                    self.errors.setText(str(self.game.counter_errors))
 
             self.main_button.setText("...вперде!")
             self.game.STAGE = "CHOOSE"
@@ -229,14 +255,21 @@ class Ui_MainWindow(object):
                 indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
             self.game.next_question()
-            
+
             if self.game.current_question:
-                answers, corrects = answers_distribution(self.game.current_question.answers)
+
+                self.total.setText(
+                    f"{self.game.counter_total} из {self.game.questions_count()}"
+                )
+
+                answers, corrects = answers_distribution(
+                    self.game.current_question.answers
+                )
                 self.game.current_question.corrects = corrects
-                number = f'{self.game.current_question.number}).'
+                number = f"{self.game.current_question.number})."
                 question = self.game.current_question.text
 
-                self.question_field.setPlainText(f'{number} {question}')
+                self.question_field.setPlainText(f"{number} {question}")
                 self.answer_field.setPlainText(answers)
 
                 self.main_button.setText("Проверить...")
@@ -245,11 +278,7 @@ class Ui_MainWindow(object):
             else:
                 self.main_button.setText("СНОВА!")
                 self.game.STAGE = "CHOOSE"
-
-    def test_read(self):
-        for q in self.quiz_list:
-            print(q.text, q.answers[0].text)
-
+                self.game.WAITS = True
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -270,7 +299,10 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "верно"))
         self.label_6.setText(_translate("MainWindow", "неверно"))
         self.menu.setTitle(_translate("MainWindow", "опции"))
-        self.action.setText(_translate("MainWindow", "порядок"))
+        self.menu_2.setTitle(_translate("MainWindow", "порядок"))
+        self.action_2.setText(_translate("MainWindow", "случайный"))
+        self.action_3.setText(_translate("MainWindow", "прямой"))
+
 
 if __name__ == "__main__":
     import sys

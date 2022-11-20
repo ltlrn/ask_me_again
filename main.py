@@ -33,15 +33,26 @@ class Game:
     и счетчиками, флаги состояния, генератор."""
 
     def __init__(self):
+
+        # флаги:
+
         self.WAITS: bool = True
         self.RANDOM: bool = True
         self.STAGE: str = "CHOOSE"
+
+        # счётчики:
+
+        self.counter_total: int = 0
+        self.counter_corrects: int = 0
+        self.counter_errors: int = 0
+
+        # доступ к вопросам:
 
         self.quiz_list: list = []
         self.generator = None
         self.current_question = None
 
-    def restart(self, order="random") -> None:
+    def restart(self) -> None:
         """Пререзагружает игру, может менять последовательность
         вывода вопросов.
         """
@@ -50,13 +61,25 @@ class Game:
         else:
             self.generator = (question for question in self.quiz_list)
 
-    def change_variant(self) -> None:
-        pass
-
     def next_question(self) -> None:
         """Переход к следующем вопросу."""
         try:
             self.current_question = self.generator.__next__()
+            self.counter_total += 1
         except StopIteration:
             self.current_question = None
-            self.WAITS = True
+            self.WAITS = True  # не очевидно, меняется в двух местах
+
+    def counters_drop(self) -> None:
+        """Сброс счётчиков."""
+
+        self.counter_total = 0
+        self.counter_corrects = 0
+        self.counter_errors = 0
+
+    def questions_count(self) -> int:
+        """Возвращает количество вопросов в текущем варианте игры."""
+        return len(self.quiz_list)
+
+    def change_variant(self) -> None:
+        pass

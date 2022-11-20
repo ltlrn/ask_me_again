@@ -30,13 +30,12 @@ def answers_distribution(answers_list: list) -> str:
 
 
 def get_choices(button_box):
-    """ "Принимает на вход набор радиокнопок или флажков.
+    """Принимает на вход набор радиокнопок или флажков.
     Возвращает номера активированных кнопок из набора."""
     choices = []
 
     for button in button_box:
         if button.isChecked():
-            print(button.text())
             choices.append(int(button.text()))
 
     return choices
