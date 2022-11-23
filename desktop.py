@@ -2,12 +2,12 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 
 from desktop_new import Ui_MainWindow
-from data_transfer import db_read
+from data_transfer import DataTransfer
 from main import Question, Answer, Game
 from utils import clear_fields, answers_distribution, get_choices
 
 
-class MyQ(Ui_MainWindow): 
+class MyQ(Ui_MainWindow):
     def __init__(self, MainWindow):
         super().setupUi(MainWindow)
 
@@ -47,7 +47,7 @@ class MyQ(Ui_MainWindow):
         instances with data returned by db_read function.
         """
 
-        question_sets, answer_sets = db_read()
+        question_sets, answer_sets = DataTransfer.read()
 
         # answers may be sorted by question_id
 

@@ -1,5 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from data_transfer import db_create, db_insert, db_count, corrects
+from data_transfer import DataTransfer
 
 
 class Ui_MainWindow(object):
@@ -35,11 +35,11 @@ class Ui_MainWindow(object):
         self.add_functions()
 
     def add_functions(self):
-        self.save_button.clicked.connect(lambda: db_create())
+        self.save_button.clicked.connect(lambda: DataTransfer.create())
         self.save_button.clicked.connect(lambda: self.parser())
 
     def parser(self):
-        q_number = db_count()[0] + 1  # make it better!
+        q_number = DataTransfer.count()[0] + 1  # make it better!
 
         questions_list = []
         questions_list.append(((self.question_field.toPlainText()).rstrip(),))
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
 
         corr_status = [0] * len(answers_list)
 
-        for i in corrects(answers_list):
+        for i in DataTransfer.corrects(answers_list):
             corr_status[i] = 1
 
         print("corrects: ", corr_status)
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
 
         print(f"{q_number} question created...")
 
-        db_insert(questions_list, answers_to_db)
+        DataTransfer.insert(questions_list, answers_to_db)
         self.answers_field.clear()
         self.question_field.clear()
 

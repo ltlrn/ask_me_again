@@ -1,120 +1,122 @@
 import sqlite3
 
 
-def db_create():
-    """Create simple db of two related tables,
-    if it not already exists in current directory.
-    """
-
-    connect = sqlite3.connect("db.sqlite")
-    cursor = connect.cursor()
-    print("Preparing db...")
-    cursor.executescript(
+class DataTransfer:
+    @classmethod
+    def create():
+        """Create simple db of two related tables,
+        if it not already exists in current directory.
         """
-        CREATE TABLE IF NOT EXISTS questions(
-            id INTEGER PRIMARY KEY,
-            question_text TEXT NOT NULL
-        ); 
 
-        CREATE TABLE IF NOT EXISTS answers(
-            id INTEGER PRIMARY KEY,
-            answer_text TEXT NOT NULL,
-            question_id INTEGER NOT NULL,
-            correct BOOL NOT NULL,
-            FOREIGN KEY(question_id) REFERENCES questions(id)
-        );
-    """
-    )
-
-    connect.commit()
-    connect.close()
-
-
-def db_insert(questions_list, answers_list):
-
-    connect = sqlite3.connect("db.sqlite")
-    cursor = connect.cursor()
-
-    cursor.executemany("INSERT INTO questions VALUES(NULL, ?);", questions_list)
-
-    cursor.executemany("INSERT INTO answers VALUES(NULL, ?, ?, ?);", answers_list)
-
-    connect.commit()
-    connect.close()
-
-
-def db_read():
-    connect = sqlite3.connect("db.sqlite")
-    cursor = connect.cursor()
-
-    questions = []
-    answers = []
-
-    cursor.execute(
+        connect = sqlite3.connect("db.sqlite")
+        cursor = connect.cursor()
+        print("Preparing db...")
+        cursor.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS questions(
+                id INTEGER PRIMARY KEY,
+                question_text TEXT NOT NULL
+            ); 
+    
+            CREATE TABLE IF NOT EXISTS answers(
+                id INTEGER PRIMARY KEY,
+                answer_text TEXT NOT NULL,
+                question_id INTEGER NOT NULL,
+                correct BOOL NOT NULL,
+                FOREIGN KEY(question_id) REFERENCES questions(id)
+            );
         """
-        SELECT *
-        FROM questions;
+        )
+
+        connect.commit()
+        connect.close()
+
+    @classmethod
+    def insert(questions_list, answers_list):
+
+        connect = sqlite3.connect("db.sqlite")
+        cursor = connect.cursor()
+
+        cursor.executemany("INSERT INTO questions VALUES(NULL, ?);", questions_list)
+
+        cursor.executemany("INSERT INTO answers VALUES(NULL, ?, ?, ?);", answers_list)
+
+        connect.commit()
+        connect.close()
+
+    @classmethod
+    def read():
+        connect = sqlite3.connect("db.sqlite")
+        cursor = connect.cursor()
+
+        questions = []
+        answers = []
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM questions;
+            """
+        )
+
+        for element in cursor:
+            questions.append(element)
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM answers;
+            """
+        )
+
+        for element in cursor:
+            answers.append(element)
+
+        connect.close()
+
+        return questions, answers
+
+    @classmethod
+    def count():
+        """Counts records in db to know the number of next
+        adding question.
         """
-    )
+        connect = sqlite3.connect("db.sqlite")
+        cursor = connect.cursor()
 
-    for element in cursor:
-        questions.append(element)
-
-    cursor.execute(
+        cursor.execute(
+            """
+            SELECT COUNT(id)
+            FROM questions;
         """
-        SELECT *
-        FROM answers;
+        )
+        res = []
+        for el in cursor:
+            res.append(el)
+
+        connect.close()
+
+        return res[0]
+
+    @classmethod
+    def corrects(answers_list):
+        """Returns the list of indexes of correct answers
+        to construct a record in db later. Also strips 'CORRECT'
+        marker from the answer.
         """
-    )
+        correct_indexes = []
 
-    for element in cursor:
-        answers.append(element)
+        for answer in answers_list:
+            if answer.endswith("CORRECT"):
+                index = answers_list.index(answer)
+                correct_indexes.append(index)
+                answers_list[index] = answer.rstrip("CORRECT")
 
-    connect.close()
+        return correct_indexes
 
-    return questions, answers
+    # The amount of labels and radiobuttons in the GUI correlates
+    # with the number of answers in every question, please don`t forget!
 
-
-def db_count():
-    """Counts records in db to know the number of next
-    adding question.
-    """
-    connect = sqlite3.connect("db.sqlite")
-    cursor = connect.cursor()
-
-    cursor.execute(
-        """
-        SELECT COUNT(id)
-        FROM questions;
-    """
-    )
-    res = []
-    for el in cursor:
-        res.append(el)
-
-    connect.close()
-
-    return res[0]
-
-
-def corrects(answers_list):
-    """Returns the list of indexes of correct answers
-    to construct a record in db later. Also strips 'CORRECT'
-    marker from the answer.
-    """
-    correct_indexes = []
-
-    for answer in answers_list:
-        if answer.endswith("CORRECT"):
-            index = answers_list.index(answer)
-            correct_indexes.append(index)
-            answers_list[index] = answer.rstrip("CORRECT")
-
-    return correct_indexes
-
-
-# The amount of labels and radiobuttons in the GUI correlates
-# with the number of answers in every question, please don`t forget!
 
 if __name__ == "__main__":
 
@@ -130,6 +132,5 @@ if __name__ == "__main__":
         ("the second question",),
     ]
 
-    db_create()
-    print(db_read())
-    # db_insert(test_questions, test_answers)
+    DataTransfer.create()
+    print(DataTransfer.read())
