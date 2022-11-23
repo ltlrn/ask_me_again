@@ -19,6 +19,9 @@ class Answer:
     """
 
     def __init__(self, answer_set):
+
+        # text, question_id, correct = answer_set L
+
         self.text: str = answer_set[1]
         self.question_id: int = answer_set[2]
         self.correct: bool = bool(answer_set[3])
@@ -34,19 +37,13 @@ class Game:
 
     def __init__(self):
 
-        # флаги:
-
         self.WAITS: bool = True
         self.RANDOM: bool = True
         self.STAGE: str = "CHOOSE"
 
-        # счётчики:
-
         self.counter_total: int = 0
         self.counter_corrects: int = 0
         self.counter_errors: int = 0
-
-        # доступ к вопросам:
 
         self.quiz_list: list = []
         self.generator = None
@@ -64,7 +61,7 @@ class Game:
     def next_question(self) -> None:
         """Переход к следующем вопросу."""
         try:
-            self.current_question = self.generator.__next__()
+            self.current_question = self.generator.__next__() # next(self.gen...) L
             self.counter_total += 1
         except StopIteration:
             self.current_question = None

@@ -120,6 +120,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+# my code below
+
         self.quiz_list = []
         self.game = Game()  # экземпляр сеанса игры
 
@@ -145,11 +147,6 @@ class Ui_MainWindow(object):
 
     def add_functions(self) -> None:
         self.main_button.clicked.connect(lambda: self.main_button_mechanism())
-
-    def check_answer(self):
-        rb = self.sender()
-        if rb.isChecked():
-            print(rb.text())
 
     def forming_questions(self) -> None:
         """Adds to self.quiz_list Question and Answer class
@@ -187,11 +184,9 @@ class Ui_MainWindow(object):
                 self.forming_questions()
 
             self.game.WAITS = False
-
-            if self.action_2.isChecked():
-                self.game.RANDOM = True
-            else:
-                self.game.RANDOM = False
+           
+            self.game.RANDOM = self.action_2.isChecked()
+          
 
             self.game.counters_drop()
 
@@ -246,7 +241,7 @@ class Ui_MainWindow(object):
                     self.game.counter_errors += 1
                     self.errors.setText(str(self.game.counter_errors))
 
-            self.main_button.setText("...вперде!")
+            self.main_button.setText("...вперёд!")
             self.game.STAGE = "CHOOSE"
 
         elif (not self.game.WAITS) and self.game.STAGE == "CHOOSE":
