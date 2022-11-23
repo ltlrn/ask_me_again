@@ -1,4 +1,4 @@
-from utils import randomize
+from utils import Tools
 
 
 class Question:
@@ -34,19 +34,13 @@ class Game:
 
     def __init__(self):
 
-        # флаги:
-
         self.WAITS: bool = True
         self.RANDOM: bool = True
         self.STAGE: str = "CHOOSE"
 
-        # счётчики:
-
         self.counter_total: int = 0
         self.counter_corrects: int = 0
         self.counter_errors: int = 0
-
-        # доступ к вопросам:
 
         self.quiz_list: list = []
         self.generator = None
@@ -57,7 +51,7 @@ class Game:
         вывода вопросов.
         """
         if self.RANDOM:
-            self.generator = (question for question in randomize(self.quiz_list))
+            self.generator = (question for question in Tools.randomize(self.quiz_list))
         else:
             self.generator = (question for question in self.quiz_list)
 

@@ -4,10 +4,12 @@ from PyQt6.QtWidgets import QMainWindow
 from desktop_new import Ui_MainWindow
 from data_transfer import DataTransfer
 from main import Question, Answer, Game
-from utils import clear_fields, answers_distribution, get_choices
+from utils import Tools
+
+# clear_fields, answers_distribution, get_choices
 
 
-class MyQ(Ui_MainWindow):
+class MyQ(Ui_MainWindow, Tools):
     def __init__(self, MainWindow):
         super().setupUi(MainWindow)
 
@@ -89,7 +91,7 @@ class MyQ(Ui_MainWindow):
             self.correct.setText("0")
             self.errors.setText("0")
 
-            clear_fields(self.answer_field, self.question_field)
+            self.clear_fields(self.answer_field, self.question_field)
             for indicator in self.indicators_box:
                 indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
@@ -101,7 +103,9 @@ class MyQ(Ui_MainWindow):
             )
 
             # may be reimplement it like Game class method...
-            answers, corrects = answers_distribution(self.game.current_question.answers)
+            answers, corrects = self.answers_distribution(
+                self.game.current_question.answers
+            )
             self.game.current_question.corrects = corrects
             number = f"{self.game.current_question.number})."
             question = self.game.current_question.text
@@ -114,7 +118,7 @@ class MyQ(Ui_MainWindow):
 
         elif self.game.STAGE == "CHECK":
 
-            choices = get_choices(
+            choices = self.get_choices(
                 self.radio_box
             )  # switch на количество правильных ответов
 
@@ -141,7 +145,7 @@ class MyQ(Ui_MainWindow):
             self.game.STAGE = "CHOOSE"
 
         elif (not self.game.WAITS) and self.game.STAGE == "CHOOSE":
-            clear_fields(self.answer_field, self.question_field)
+            self.clear_fields(self.answer_field, self.question_field)
             for indicator in self.indicators_box:
                 indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
@@ -153,7 +157,7 @@ class MyQ(Ui_MainWindow):
                     f"{self.game.counter_total} из {self.game.questions_count()}"
                 )
 
-                answers, corrects = answers_distribution(
+                answers, corrects = self.answers_distribution(
                     self.game.current_question.answers
                 )
                 self.game.current_question.corrects = corrects
