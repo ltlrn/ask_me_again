@@ -2,8 +2,8 @@ import random
 
 
 class Tools:
-    @classmethod
-    def randomize(self, some_list):
+    @staticmethod
+    def randomize(some_list):
         new_list = random.sample(some_list, len(some_list))
         return new_list
 

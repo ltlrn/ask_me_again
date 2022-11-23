@@ -3,7 +3,7 @@ import sqlite3
 
 class DataTransfer:
     @classmethod
-    def create(self):
+    def create(cls):
         """Create simple db of two related tables,
         if it not already exists in current directory.
         """
@@ -32,7 +32,7 @@ class DataTransfer:
         connect.close()
 
     @classmethod
-    def insert(self, questions_list, answers_list):
+    def insert(cls, questions_list, answers_list):
 
         connect = sqlite3.connect("db.sqlite")
         cursor = connect.cursor()
@@ -45,7 +45,7 @@ class DataTransfer:
         connect.close()
 
     @classmethod
-    def read(self):
+    def read(cls):
         connect = sqlite3.connect("db.sqlite")
         cursor = connect.cursor()
 
@@ -77,7 +77,7 @@ class DataTransfer:
         return questions, answers
 
     @classmethod
-    def count(self):
+    def count(cls):
         """Counts records in db to know the number of next
         adding question.
         """
@@ -99,7 +99,7 @@ class DataTransfer:
         return res[0]
 
     @classmethod
-    def corrects(self, answers_list):
+    def corrects(cls, answers_list):
         """Returns the list of indexes of correct answers
         to construct a record in db later. Also strips 'CORRECT'
         marker from the answer.
