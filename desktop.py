@@ -1,9 +1,9 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 
-from desktop_new import Ui_MainWindow
 from data_transfer import DataTransfer
-from main import Question, Answer, Game
+from desktop_new import Ui_MainWindow
+from main import Answer, Game, Question
 from utils import Tools
 
 # clear_fields, answers_distribution, get_choices
@@ -38,32 +38,6 @@ class MyQ(Ui_MainWindow, Tools):
 
     def add_functions(self) -> None:
         self.main_button.clicked.connect(lambda: self.main_button_mechanism())
-
-    def forming_questions(self) -> None:
-        """Adds to self.quiz_list Question and Answer class
-        instances with data returned by db_read function.
-        """
-
-        question_sets, answer_sets = DataTransfer.read()
-
-        # answers may be sorted by question_id
-
-        answers_list = []
-
-        for question_set in question_sets:
-            self.quiz_list.append(Question(question_set))
-
-        for answer_set in answer_sets:
-            answers_list.append(Answer(answer_set))
-
-        for question in self.quiz_list:
-            for answer in answers_list:
-                if question.number == answer.question_id:
-                    question.answers.append(answer)
-
-        self.game.quiz_list = (
-            self.quiz_list
-        )  # may be some sort of deep copy would match better
 
     def main_button_mechanism(self) -> None:
         """Механизм главной кнопки, собссно. Срабатывает при нажатии, часто по-разному,

@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+
 from data_transfer import DataTransfer
 
 

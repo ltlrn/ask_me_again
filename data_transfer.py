@@ -105,7 +105,7 @@ class DataTransfer:
         """Возвращает список индексов правильных ответов,
         чтобы в дальнейшем сформировать запись в БД. Также
         убирает маркер 'CORRECT' из текста ответа.
-        
+
         Returns the list of indexes of correct answers
         to construct a record in db later. Also strips 'CORRECT'
         marker from the answer.

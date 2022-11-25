@@ -1,4 +1,4 @@
-from utils import Tools
+from random import sample
 
 
 class Question:
@@ -50,8 +50,12 @@ class Game:
         """Пререзагружает игру, может менять последовательность
         вывода вопросов.
         """
+
         if self.RANDOM:
-            self.generator = (question for question in Tools.randomize(self.quiz_list))
+            self.generator = (
+                question for question in sample(self.quiz_list, len(self.quiz_list))
+            )
+
         else:
             self.generator = (question for question in self.quiz_list)
 
