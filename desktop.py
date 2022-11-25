@@ -39,11 +39,6 @@ class MyQ(Ui_MainWindow, Tools):
     def add_functions(self) -> None:
         self.main_button.clicked.connect(lambda: self.main_button_mechanism())
 
-    def check_answer(self):
-        rb = self.sender()
-        if rb.isChecked():
-            print(rb.text())
-
     def forming_questions(self) -> None:
         """Adds to self.quiz_list Question and Answer class
         instances with data returned by db_read function.

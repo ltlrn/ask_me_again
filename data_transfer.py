@@ -4,8 +4,8 @@ import sqlite3
 class DataTransfer:
     @classmethod
     def create(cls):
-        """Create simple db of two related tables,
-        if it not already exists in current directory.
+        """Создаёт базу данных из двух таблиц, если
+        не находит уже существующую.
         """
 
         connect = sqlite3.connect("db.sqlite")
@@ -33,6 +33,7 @@ class DataTransfer:
 
     @classmethod
     def insert(cls, questions_list, answers_list):
+        """Добавляет данные в соответствующие таблицы."""
 
         connect = sqlite3.connect("db.sqlite")
         cursor = connect.cursor()
@@ -46,6 +47,8 @@ class DataTransfer:
 
     @classmethod
     def read(cls):
+        """Читает все данные из таблиц Question и Answer."""
+
         connect = sqlite3.connect("db.sqlite")
         cursor = connect.cursor()
 
@@ -78,9 +81,8 @@ class DataTransfer:
 
     @classmethod
     def count(cls):
-        """Counts records in db to know the number of next
-        adding question.
-        """
+        """Считает количество записей в таблице Questions."""
+
         connect = sqlite3.connect("db.sqlite")
         cursor = connect.cursor()
 
@@ -100,7 +102,11 @@ class DataTransfer:
 
     @classmethod
     def corrects(cls, answers_list):
-        """Returns the list of indexes of correct answers
+        """Возвращает список индексов правильных ответов,
+        чтобы в дальнейшем сформировать запись в БД. Также
+        убирает маркер 'CORRECT' из текста ответа.
+        
+        Returns the list of indexes of correct answers
         to construct a record in db later. Also strips 'CORRECT'
         marker from the answer.
         """
