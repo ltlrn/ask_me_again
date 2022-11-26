@@ -15,15 +15,18 @@ class Question:
 class Answer:
     """
     Описывает объект Ответа, который имеет поля текста,
-    номера вопроса, к которому относитя, значения истинности.
+    номера вопроса, к которому относится, значения истинности.
     """
 
-    def __init__(self, answer_set):
-        self.text: str = answer_set[1]
+    def __init__(self, answer_set: tuple) -> None:
+
+        # change it
+
+        self.text: str = answer_set[1]    
         self.question_id: int = answer_set[2]
         self.correct: bool = bool(answer_set[3])
 
-    def is_correct(self) -> bool:
+    def is_correct(self) -> bool: # may be there is no any sence in it
         """Возвращает, верен ответ или нет."""
         return self.correct
 
@@ -32,7 +35,7 @@ class Game:
     """Класс сеанса игры. Содержит методы управления, поля с вопросами
     и счетчиками, флаги состояния, генератор."""
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.WAITS: bool = True
         self.RANDOM: bool = True
@@ -59,10 +62,12 @@ class Game:
         else:
             self.generator = (question for question in self.quiz_list)
 
+        self.next_question()
+
     def next_question(self) -> None:
         """Переход к следующем вопросу."""
         try:
-            self.current_question = self.generator.__next__()
+            self.current_question = next(self.generator)
             self.counter_total += 1
         except StopIteration:
             self.current_question = None
