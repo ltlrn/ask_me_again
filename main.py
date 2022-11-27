@@ -22,11 +22,11 @@ class Answer:
 
         # change it
 
-        self.text: str = answer_set[1]    
+        self.text: str = answer_set[1]
         self.question_id: int = answer_set[2]
         self.correct: bool = bool(answer_set[3])
 
-    def is_correct(self) -> bool: # may be there is no any sence in it
+    def is_correct(self) -> bool:  # may be there is no any sence in it
         """Возвращает, верен ответ или нет."""
         return self.correct
 
