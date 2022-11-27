@@ -5,6 +5,41 @@ from main import Answer, Question
 
 
 class Tools:
+    def declare_button_groups(self):
+        self.radio_box = [
+            self.radioButton_1,
+            self.radioButton_2,
+            self.radioButton_3,
+            self.radioButton_4,
+            self.radioButton_5,
+        ]
+
+        self.check_box = [
+            self.checkBox,
+            self.checkBox_2,
+            self.checkBox_3,
+            self.checkBox_4,
+            self.checkBox_5,
+        ]
+
+        self.indicators_box = [
+            self.indicator_1,
+            self.indicator_2,
+            self.indicator_3,
+            self.indicator_4,
+            self.indicator_5,
+        ]
+
+        self.check_indicators_box = [
+            self.indicator_6,
+            self.indicator_7,
+            self.indicator_8,
+            self.indicator_9,
+            self.indicator_10,
+        ]
+
+        self.radio_box[0].setChecked(True)
+
     def clear_fields(self, *fields) -> None:
         """Clear some fields."""
         for field in fields:
@@ -27,9 +62,16 @@ class Tools:
 
         return output
 
-    def get_choices(self, button_box):
+    def get_choices(self):
         """Принимает на вход набор радиокнопок или флажков.
         Возвращает номера активированных кнопок из набора."""
+        if len(self.game.current_question.corrects) > 1:
+            button_box = self.check_box
+            print("check")
+        else:
+            button_box = self.radio_box
+            print("radio")
+
         choices = []
 
         for button in button_box:
@@ -91,7 +133,7 @@ class Tools:
         question = self.game.current_question.text
         self.question_field.setPlainText(f"{number} {question}")
         self.answer_field.setPlainText(answers)
-    
+
     def user_answers_right(self, choices):
         for choice in choices:
             indicator = self.indicators_box[choice - 1]
@@ -103,7 +145,7 @@ class Tools:
         for correct in self.game.current_question.corrects:
             indicator = self.indicators_box[correct - 1]
             indicator.setStyleSheet("background-color: green;")
-            
+
         for choice in choices:
             indicator = self.indicators_box[choice - 1]
             indicator.setStyleSheet("background-color: red;")
@@ -115,3 +157,11 @@ class Tools:
             self.game.RANDOM = True
         else:
             self.game.RANDOM = False
+
+    def check_or_radiobuttons_set(self):
+        if len(self.game.current_question.corrects) > 1:
+            self.frame.hide()
+            self.frame_2.show()
+        else:
+            self.frame.show()
+            self.frame_2.hide()
