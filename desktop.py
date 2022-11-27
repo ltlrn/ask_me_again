@@ -48,7 +48,7 @@ class MyQ(Ui_MainWindow, Tools):
 
         elif self.game.STAGE == "CHECK":
             choices = self.get_choices()  # switch на количество правильных ответов
-            print(choices)
+
             if choices == self.game.current_question.corrects:
                 self.user_answers_right(choices)
 

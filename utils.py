@@ -6,7 +6,7 @@ from main import Answer, Question
 
 class Tools:
     def declare_button_groups(self):
-        """"Группирует два набора радиокнопок и индикаторов
+        """ "Группирует два набора радиокнопок и индикаторов
         для удобства итерирования по ним."""
         self.radio_box = [
             self.radioButton_1,
@@ -48,9 +48,9 @@ class Tools:
             field.clear()
 
     def answers_distribution(self, answers_list: list) -> tuple:
-        """Принимает список объектов Answer вопроса. Возвращает кортеж из 
-        строки, содержащей пронумерованные варианты ответа для текущего вопроса, 
-        расположенные в случайном порядке, для размещения в поле ответов и списка 
+        """Принимает список объектов Answer вопроса. Возвращает кортеж из
+        строки, содержащей пронумерованные варианты ответа для текущего вопроса,
+        расположенные в случайном порядке, для размещения в поле ответов и списка
         номеров правильных ответов."""
         strings = []
         corrects = []
@@ -72,10 +72,8 @@ class Tools:
         Возвращает номера активированных кнопок из набора."""
         if len(self.game.current_question.corrects) > 1:
             button_box = self.check_box
-            print("check")
         else:
             button_box = self.radio_box
-            print("radio")
 
         choices = []
 
@@ -126,6 +124,12 @@ class Tools:
         for indicator in self.indicators_box:
             indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
+        for indicator in self.check_indicators_box:
+            indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
+
+        for flag in self.check_box:
+            flag.setChecked(False)
+
     def current_question_appearance(self) -> None:
         """Распределение элементов текущего вопроса по виджетам интерфейса.
         Установка списка номеров правильных ответов в поле corrects текущего
@@ -148,26 +152,39 @@ class Tools:
         """Вызывается при проверке текущего вопроса, если пользователь
         ответил правильно. Меняет цвет индикатора, соответствующего
         ответу(-ам), на зелёный, увеличивает соответствующий счетчик."""
+        indicators = self.indicators_box
+
+        if len(self.game.current_question.corrects) > 1:
+            indicators = self.check_indicators_box
+
         for choice in choices:
-            indicator = self.indicators_box[choice - 1]
+            indicator = indicators[choice - 1]
             indicator.setStyleSheet("background-color: green;")
-            self.game.counter_corrects += 1
-            self.correct.setText(str(self.game.counter_corrects))
+
+        self.game.counter_corrects += 1
+        self.correct.setText(str(self.game.counter_corrects))
 
     def user_answers_wrong(self, choices) -> None:
         """Вызывается при проверке текущего вопроса, если пользователь
         ошибся. Меняет цвет индикатора, соответствующего ответу(-ам),
         на красный, а соответствующего верному варианту - на зеленый;
         увеличивает соответствующий счетчик."""
-        for correct in self.game.current_question.corrects:
-            indicator = self.indicators_box[correct - 1]
-            indicator.setStyleSheet("background-color: green;")
+
+        indicators = self.indicators_box
+
+        if len(self.game.current_question.corrects) > 1:
+            indicators = self.check_indicators_box
 
         for choice in choices:
-            indicator = self.indicators_box[choice - 1]
+            indicator = indicators[choice - 1]
             indicator.setStyleSheet("background-color: red;")
-            self.game.counter_errors += 1
-            self.errors.setText(str(self.game.counter_errors))
+
+        for correct in self.game.current_question.corrects:
+            indicator = indicators[correct - 1]
+            indicator.setStyleSheet("background-color: green;")
+
+        self.game.counter_errors += 1
+        self.errors.setText(str(self.game.counter_errors))
 
     def set_game_mode(self) -> None:
         """Устанавливает порядок вопросов в игре: прямой или случайный."""
