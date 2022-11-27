@@ -6,6 +6,8 @@ from main import Answer, Question
 
 class Tools:
     def declare_button_groups(self):
+        """"Группирует два набора радиокнопок и индикаторов
+        для удобства итерирования по ним."""
         self.radio_box = [
             self.radioButton_1,
             self.radioButton_2,
@@ -41,12 +43,15 @@ class Tools:
         self.radio_box[0].setChecked(True)
 
     def clear_fields(self, *fields) -> None:
-        """Clear some fields."""
+        """Очищает поля вопроса и ответа."""
         for field in fields:
             field.clear()
 
-    def answers_distribution(self, answers_list: list) -> str:
-
+    def answers_distribution(self, answers_list: list) -> tuple:
+        """Принимает список объектов Answer вопроса. Возвращает кортеж из 
+        строки, содержащей пронумерованные варианты ответа для текущего вопроса, 
+        расположенные в случайном порядке, для размещения в поле ответов и списка 
+        номеров правильных ответов."""
         strings = []
         corrects = []
 
@@ -81,8 +86,8 @@ class Tools:
         return choices
 
     def forming_questions(self) -> None:
-        """Adds to self.quiz_list Question and Answer class
-        instances with data returned by db_read function.
+        """Добавляет в список self.quiz_list экземплры Question и Answer,
+        полученные из БД.
         """
 
         question_sets, answer_sets = DataTransfer.read()
@@ -108,18 +113,23 @@ class Tools:
 
     # main button mechanism elements:
 
-    def counters_to_null(self):
+    def counters_to_null(self) -> None:
+        """Сбрасывает все счетчики."""
         self.game.counters_drop()
         self.correct.setText("0")
         self.errors.setText("0")
 
-    def fields_and_indicators_clear(self):
+    def fields_and_indicators_clear(self) -> None:
+        """Очищает поля и сбрасывает индикаторы."""
         self.clear_fields(self.answer_field, self.question_field)
 
         for indicator in self.indicators_box:
             indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
-    def current_question_appearance(self):
+    def current_question_appearance(self) -> None:
+        """Распределение элементов текущего вопроса по виджетам интерфейса.
+        Установка списка номеров правильных ответов в поле corrects текущего
+        вопроса."""
         self.total.setText(
             f"{self.game.counter_total} из {self.game.questions_count()}"
         )
@@ -134,14 +144,21 @@ class Tools:
         self.question_field.setPlainText(f"{number} {question}")
         self.answer_field.setPlainText(answers)
 
-    def user_answers_right(self, choices):
+    def user_answers_right(self, choices) -> None:
+        """Вызывается при проверке текущего вопроса, если пользователь
+        ответил правильно. Меняет цвет индикатора, соответствующего
+        ответу(-ам), на зелёный, увеличивает соответствующий счетчик."""
         for choice in choices:
             indicator = self.indicators_box[choice - 1]
             indicator.setStyleSheet("background-color: green;")
             self.game.counter_corrects += 1
             self.correct.setText(str(self.game.counter_corrects))
 
-    def user_answers_wrong(self, choices):
+    def user_answers_wrong(self, choices) -> None:
+        """Вызывается при проверке текущего вопроса, если пользователь
+        ошибся. Меняет цвет индикатора, соответствующего ответу(-ам),
+        на красный, а соответствующего верному варианту - на зеленый;
+        увеличивает соответствующий счетчик."""
         for correct in self.game.current_question.corrects:
             indicator = self.indicators_box[correct - 1]
             indicator.setStyleSheet("background-color: green;")
@@ -152,13 +169,17 @@ class Tools:
             self.game.counter_errors += 1
             self.errors.setText(str(self.game.counter_errors))
 
-    def set_game_mode(self):
+    def set_game_mode(self) -> None:
+        """Устанавливает порядок вопросов в игре: прямой или случайный."""
         if self.action_2.isChecked():
             self.game.RANDOM = True
         else:
             self.game.RANDOM = False
 
-    def check_or_radiobuttons_set(self):
+    def check_or_radiobuttons_set(self) -> None:
+        """В зависимости от количества верных вариантов ответов
+        в текущем вопросе скрывает набор радиокнопок и показывает
+        набор флажков - или наоборот."""
         if len(self.game.current_question.corrects) > 1:
             self.frame.hide()
             self.frame_2.show()
