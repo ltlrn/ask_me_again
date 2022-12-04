@@ -65,6 +65,9 @@ class Ui_MainWindow(object):
             answers_to_db.append((text, q_id, corr))
 
         print(f"{q_number} question created...")
+        print(questions_list)
+        print("=" * 50)
+        print(answers_to_db)
 
         DataTransfer.insert(questions_list, answers_to_db)
         self.answers_field.clear()

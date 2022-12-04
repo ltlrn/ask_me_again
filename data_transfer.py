@@ -113,10 +113,12 @@ class DataTransfer:
         correct_indexes = []
 
         for answer in answers_list:
+            index = answers_list.index(answer)
+            answers_list[index] = answer[3:]
+
             if answer.endswith("CORRECT"):
-                index = answers_list.index(answer)
                 correct_indexes.append(index)
-                answers_list[index] = answer.rstrip("CORRECT")
+                answers_list[index] = answer[3:].rstrip("CORRECT")
 
         return correct_indexes
 
