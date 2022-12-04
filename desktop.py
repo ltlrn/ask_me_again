@@ -3,8 +3,8 @@ from PyQt6.QtWidgets import QMainWindow
 
 from data_transfer import DataTransfer
 
-# from desktop_new import Ui_MainWindow
-from dsk import Ui_MainWindow
+from desktop_new import Ui_MainWindow
+# from dsk import Ui_MainWindow
 from main import Answer, Game, Question
 from utils import Tools
 
@@ -17,7 +17,7 @@ class MyQ(Ui_MainWindow, Tools):
         self.game = Game()  # экземпляр сеанса игры
 
         self.declare_button_groups()
-        self.frame_2.hide()
+        self.buttons_show(2)
 
         self.add_functions()
 
@@ -37,7 +37,7 @@ class MyQ(Ui_MainWindow, Tools):
 
             self.set_game_mode()
             self.counters_to_null()
-            self.fields_and_indicators_clear()
+            # self.fields_and_indicators_clear()
             self.game.restart()
             self.current_question_appearance()
 

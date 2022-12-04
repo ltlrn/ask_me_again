@@ -8,7 +8,15 @@ class Tools:
     def declare_button_groups(self):
         """ "Группирует два набора радиокнопок и индикаторов
         для удобства итерирования по ним."""
-        self.radio_box = [
+        self.frames = [
+            self.frame,            
+            self.frame_2,
+            self.frame_3,
+            self.frame_4,
+            self.frame_5,
+        ]
+
+        self.radio_box_1 = [
             self.radioButton_1,
             self.radioButton_2,
             self.radioButton_3,
@@ -16,7 +24,7 @@ class Tools:
             self.radioButton_5,
         ]
 
-        self.check_box = [
+        self.check_box_1 = [
             self.checkBox,
             self.checkBox_2,
             self.checkBox_3,
@@ -24,7 +32,7 @@ class Tools:
             self.checkBox_5,
         ]
 
-        self.indicators_box = [
+        self.indicators_box_1 = [
             self.indicator_1,
             self.indicator_2,
             self.indicator_3,
@@ -32,7 +40,7 @@ class Tools:
             self.indicator_5,
         ]
 
-        self.check_indicators_box = [
+        self.check_indicators_box_1 = [
             self.indicator_6,
             self.indicator_7,
             self.indicator_8,
@@ -40,7 +48,56 @@ class Tools:
             self.indicator_10,
         ]
 
-        self.radio_box[0].setChecked(True)
+        self.radio_box_2 = [
+            self.radioButton_7,
+            self.radioButton_8,
+            self.radioButton_9,
+            self.radioButton_10,
+        ]
+
+        self.indicators_box_2 = [
+            self.indicator_11,
+            self.indicator_12,
+            self.indicator_13,
+            self.indicator_14,
+        ]
+
+        self.check_box_2 = [
+            self.checkBox_6,
+            self.checkBox_7,
+            self.checkBox_8,
+            self.checkBox_9,
+        ]
+
+        self.check_indicators_box_2 = [
+            self.indicator_15,
+            self.indicator_16,
+            self.indicator_17,
+            self.indicator_18,
+        ]
+
+        self.check_box_3 = [
+            self.checkBox_10,
+            self.checkBox_11,
+            self.checkBox_12,
+            self.checkBox_13,
+            self.checkBox_14,
+            self.checkBox_15,
+            self.checkBox_16,
+            self.checkBox_17,
+        ]
+
+        self.check_indicators_box_3 = [
+            self.indicator_19,
+            self.indicator_20,
+            self.indicator_21,
+            self.indicator_22,
+            self.indicator_23,
+            self.indicator_24,
+            self.indicator_25,
+            self.indicator_26,
+        ]
+
 
     def clear_fields(self, *fields) -> None:
         """Очищает поля вопроса и ответа."""
@@ -70,11 +127,16 @@ class Tools:
     def get_choices(self):
         """Принимает на вход набор радиокнопок или флажков.
         Возвращает номера активированных кнопок из набора."""
-        if len(self.game.current_question.corrects) > 1:
-            button_box = self.check_box
-        else:
-            button_box = self.radio_box
-
+        # if len(self.game.current_question.corrects) > 1:
+        #     button_box = self.check_box
+        # else:
+        #     button_box = self.radio_box
+        
+        try:
+            button_box = self.game.current_question.buttons
+        except AttributeError:
+            print(self.game.current_question.number)
+        
         choices = []
 
         for button in button_box:
@@ -121,13 +183,13 @@ class Tools:
         """Очищает поля и сбрасывает индикаторы."""
         self.clear_fields(self.answer_field, self.question_field)
 
-        for indicator in self.indicators_box:
+        for indicator in self.game.current_question.indicators:
             indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
-        for indicator in self.check_indicators_box:
-            indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
+        # for indicator in self.check_indicators_box:
+        #     indicator.setStyleSheet("background-color: rgb(202, 175, 255);")
 
-        for flag in self.check_box:
+        for flag in self.game.current_question.buttons:
             flag.setChecked(False)
 
     def current_question_appearance(self) -> None:
@@ -152,10 +214,13 @@ class Tools:
         """Вызывается при проверке текущего вопроса, если пользователь
         ответил правильно. Меняет цвет индикатора, соответствующего
         ответу(-ам), на зелёный, увеличивает соответствующий счетчик."""
-        indicators = self.indicators_box
+        # indicators = self.indicators_box
 
-        if len(self.game.current_question.corrects) > 1:
-            indicators = self.check_indicators_box
+        # if len(self.game.current_question.corrects) > 1:
+        #     indicators = self.check_indicators_box
+
+
+        indicators = self.game.current_question.indicators
 
         for choice in choices:
             indicator = indicators[choice - 1]
@@ -170,15 +235,18 @@ class Tools:
         на красный, а соответствующего верному варианту - на зеленый;
         увеличивает соответствующий счетчик."""
 
-        indicators = self.indicators_box
+        indicators = self.game.current_question.indicators
+        print(len(indicators))
 
-        if len(self.game.current_question.corrects) > 1:
-            indicators = self.check_indicators_box
-
-        for choice in choices:
-            indicator = indicators[choice - 1]
-            indicator.setStyleSheet("background-color: red;")
-
+        # if len(self.game.current_question.corrects) > 1:
+        #     indicators = self.check_indicators_box
+        if choices:
+            for choice in choices:
+                indicator = indicators[choice - 1]
+                indicator.setStyleSheet("background-color: red;")
+        else:
+            print('no choices') # remove
+        print(self.game.current_question.corrects)
         for correct in self.game.current_question.corrects:
             indicator = indicators[correct - 1]
             indicator.setStyleSheet("background-color: green;")
@@ -193,13 +261,47 @@ class Tools:
         else:
             self.game.RANDOM = False
 
+    def buttons_show(self, number):
+        
+        for frame in self.frames:
+            frame.hide()
+
+        self.frames[number].show()
+
+
     def check_or_radiobuttons_set(self) -> None:
         """В зависимости от количества верных вариантов ответов
         в текущем вопросе скрывает набор радиокнопок и показывает
         набор флажков - или наоборот."""
+
         if len(self.game.current_question.corrects) > 1:
-            self.frame.hide()
-            self.frame_2.show()
+            if len(self.game.current_question.answers) == 4:
+                self.buttons_show(3)
+                self.game.current_question.buttons = self.check_box_2 
+                self.game.current_question.indicators = self.check_indicators_box_2
+
+            elif len(self.game.current_question.answers) == 5:
+                self.buttons_show(1)
+                self.game.current_question.buttons = self.check_box_1
+                self.game.current_question.indicators = self.check_indicators_box_1
+            else:
+                self.buttons_show(4)
+                self.game.current_question.buttons = self.check_box_3 
+                self.game.current_question.indicators = self.check_indicators_box_3
+
+        elif len(self.game.current_question.corrects) == 1:            
+            if len(self.game.current_question.answers) == 4:
+                self.buttons_show(2)
+                self.game.current_question.buttons = self.radio_box_2
+                self.game.current_question.indicators = self.indicators_box_2
+            elif len(self.game.current_question.answers) == 5:
+                self.buttons_show(0)
+                self.game.current_question.buttons = self.radio_box_1
+                self.game.current_question.indicators = self.indicators_box_1
+        # when corrects are strange, refactor it
         else:
-            self.frame.show()
-            self.frame_2.hide()
+            self.buttons_show(0)
+            self.game.current_question.buttons = self.radio_box_1
+            self.game.current_question.indicators = self.indicators_box_1
+
+            
