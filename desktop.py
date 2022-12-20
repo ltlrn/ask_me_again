@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QMainWindow
 
 from data_transfer import DataTransfer
 
-# from desktop_new import Ui_MainWindow
 from gui import Ui_MainWindow
 from main import Answer, Game, Question
 from utils import Tools
