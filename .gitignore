@@ -134,3 +134,5 @@ client.py
 desktop_new.py
 .vscode/
 #*.sqlite
+
+adder_script.py
