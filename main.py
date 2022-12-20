@@ -18,10 +18,6 @@ class Answer:
     номера вопроса, к которому относится, значения истинности.
     """
 
-    def __init__(self, answer_set: tuple) -> None:
-        
-        text, question_id, correct_marker = answer_set
-
         self.text: str = text
         self.question_id: int = question_id
         self.correct: bool = bool(correct_marker)
@@ -34,8 +30,6 @@ class Answer:
 class Game:
     """Класс сеанса игры. Содержит методы управления, поля с вопросами
     и счетчиками, флаги состояния, генератор."""
-
-    def __init__(self) -> None:
 
         self.WAITS: bool = True
         self.RANDOM: bool = True
@@ -67,7 +61,6 @@ class Game:
     def next_question(self) -> None:
         """Переход к следующем вопросу."""
         try:
-            self.current_question = next(self.generator)
             self.counter_total += 1
         except StopIteration:
             self.current_question = None

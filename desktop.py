@@ -13,6 +13,8 @@ class MyQ(Ui_MainWindow, Tools):
     def __init__(self, MainWindow):
         super().setupUi(MainWindow)
 
+# my code below
+
         self.quiz_list = []
         self.game = Game()  # экземпляр сеанса игры
 
@@ -35,9 +37,6 @@ class MyQ(Ui_MainWindow, Tools):
 
             self.game.WAITS = False
 
-            self.set_game_mode()
-            self.counters_to_null()
-            # self.fields_and_indicators_clear()
             self.game.restart()
             self.current_question_appearance()
 
