@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QMainWindow
 from data_transfer import DataTransfer
 
 # from desktop_new import Ui_MainWindow
-from dsk import Ui_MainWindow
+from gui import Ui_MainWindow
 from main import Answer, Game, Question
 from utils import Tools
 
@@ -47,7 +47,7 @@ class MyQ(Ui_MainWindow, Tools):
             self.game.STAGE = "CHECK"
 
         elif self.game.STAGE == "CHECK":
-            choices = self.get_choices()  # switch на количество правильных ответов
+            choices = self.get_choices()
 
             if choices == self.game.current_question.corrects:
                 self.user_answers_right(choices)

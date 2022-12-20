@@ -67,7 +67,7 @@ class DataTransfer:
 
         cursor.execute(
             """
-            SELECT *
+            SELECT answer_text, question_id, correct
             FROM answers;
             """
         )
